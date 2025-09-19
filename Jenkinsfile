@@ -1,69 +1,69 @@
-pipeline {
+pipeline { 
 
-	agent any
+ 	agent any 
 
-	tools {
+ 	tools { 
 
-		jfrog 'jfrog-cli'
+ 		jfrog 'jfrog-cli' 
 
-		nodejs 'node'
+ 		nodejs 'node' 
 
-	}
+ 	} 
 
-	stages {
+ 	stages { 
 
-		stage('Clone') {
+ 		stage('Clone') { 
 
-			steps {
+ 			steps { 
 
-				git branch: 'master', url: "https://github.com/barunita/guess-the-number-game.git"
+ 				git branch: 'main', url: "https://github.com/barunita/guess-the-number-game.git" 
 
-			}
+ 			} 
 
-		}
-
-
-
-		stage('Exec npm commands') {
-
-			steps {
-
-				dir('npm-example') {
-
-					// Configure npm project's repositories
-
-					jf 'npm-config --repo-resolve npm --repo-deploy npm'
+ 		} 
 
 
 
-					// Install dependencies
+ 		stage('Exec npm commands') { 
 
-					jf 'npm install'
+ 			steps { 
 
+ 				dir('npm-example') { 
 
+ 					// Configure npm project's repositories 
 
-					// Pack and deploy the npm package
-
-					jf 'npm publish'
-
-				}
-
-			}
-
-		}
+ 					jf 'npm-config --repo-resolve npm --repo-deploy npm' 
 
 
 
-		stage('Publish build info') {
+ 					// Install dependencies 
 
-			steps {
+ 					jf 'npm install' 
 
-				jf 'rt build-publish'
 
-			}
 
-		}
+ 					// Pack and deploy the npm package 
 
-	}
+ 					jf 'npm publish' 
 
-}
+ 				} 
+
+ 			} 
+
+ 		} 
+
+
+
+ 		stage('Publish build info') { 
+
+ 			steps { 
+
+ 				jf 'rt build-publish' 
+
+ 			} 
+
+ 		} 
+
+ 	} 
+
+ }
