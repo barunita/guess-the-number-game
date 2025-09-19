@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Guess the Number</title>
+    <style>
+        body { font-family: sans-serif; text-align: center; margin-top: 50px; }
+        .container { max-width: 400px; margin: auto; padding: 20px; border: 1px solid #ccc; border-radius: 8px; }
+        input[type="number"] { padding: 8px; width: 100px; }
+        button { padding: 10px 20px; margin-top: 10px; cursor: pointer; }
+        #attempts { margin-top: 15px; color: #555; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Guess the Number</h1>
+        <p><%= message %></p>
+        <form action="/guess" method="post">
+            <input type="number" name="guess" required>
+            <button type="submit">Submit Guess</button>
+        </form>
+        <p id="attempts">Attempts: <%= attempts %></p>
+    </div>
+</body>
+</html>
