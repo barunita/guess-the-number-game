@@ -1,69 +1,29 @@
-pipeline { 
-
- 	agent any 
-
- 	tools { 
-
- 		jfrog 'jfrog-cli' 
-
- 		nodejs 'node' 
-
- 	} 
-
- 	stages { 
-
- 		stage('Clone') { 
-
- 			steps { 
-
- 				git branch: 'main', url: "https://github.com/barunita/guess-the-number-game.git" 
-
- 			} 
-
- 		} 
-
-
-
- 		stage('Exec npm commands') { 
-
- 			steps { 
-
- 				dir('npm-example') { 
-
- 					// Configure npm project's repositories 
-
- 					jf 'npm-config --repo-resolve npm --repo-deploy npm' 
-
-
-
- 					// Install dependencies 
-
- 					jf 'npm install' 
-
-
-
- 					// Pack and deploy the npm package 
-
- 					jf 'npm publish' 
-
- 				} 
-
- 			} 
-
- 		} 
-
-
-
- 		stage('Publish build info') { 
-
- 			steps { 
-
- 				jf 'rt build-publish' 
-
- 			} 
-
- 		} 
-
- 	} 
-
- }
+pipeline {
+    agent any
+    tools {
+        nodejs 'node'
+        jfrog 'jfrog-cli'
+    }
+    environment {
+        ARTIFACTORY_URL = "https://arunitatrial123.jfrog.io"
+        ARTIFACTORY_CREDENTIALS_ID = 'artifactory-credentials'
+        NPM_VIRTUAL_REPO = 'npm-virtual'
+    }
+    stages {
+        stage('Checkout') {
+            steps {
+                git branch: 'main', url: 'https://github.com/barunita/guess-the-number-game.git'
+            }
+        }
+        stage('npm Install') {
+            steps {
+                sh 'npm install'
+            }
+        }
+        stage('Publish to Artifactory') {
+            steps {
+                sh 'jfrog rt npm-publish --repo-deploy ' + env.NPM_VIRTUAL_REPO
+            }
+        }
+    }
+}
