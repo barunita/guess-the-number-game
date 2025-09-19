@@ -22,6 +22,12 @@ pipeline {
             }
         }
         
+        stage('Configure JFrog npm') {
+            steps {
+                sh "${tool 'jfrog-cli'}/jf npm-config --repo-resolve npm-virtual --repo-deploy npm-virtual"
+            }
+        }
+        
         stage('Publish to Artifactory') {
             steps {
                 sh "${tool 'jfrog-cli'}/jf rt npm-publish --repo-deploy " + env.NPM_VIRTUAL_REPO
