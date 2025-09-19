@@ -27,8 +27,7 @@ pipeline {
         
         stage('Publish to Artifactory') {
             steps {
-                // Corrected command to use the JFrog CLI executable
-                sh "${tool 'jfrog-cli'}/jfrog rt npm-publish --repo-deploy " + env.NPM_VIRTUAL_REPO
+                sh "${tool 'jfrog-cli'}/jf rt npm-publish --repo-deploy " + env.NPM_VIRTUAL_REPO
             }
         }
     }
