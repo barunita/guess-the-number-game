@@ -2,12 +2,11 @@ pipeline {
     agent any
 
     tools {
-        // This must match the Node.js installation name in Jenkins
-        nodejs 'node' 
+        nodejs 'node'
+        jfrog 'jfrog-cli'
     }
 
     environment {
-        // Your Artifactory URL
         ARTIFACTORY_URL = "https://arunitatrial123.jfrog.io"
         ARTIFACTORY_CREDENTIALS_ID = 'artifactory-credentials'
         NPM_VIRTUAL_REPO = 'npm-virtual'
@@ -16,7 +15,6 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                // Your GitHub repository and branch
                 git branch: 'main', url: 'https://github.com/barunita/guess-the-number-game.git'
             }
         }
@@ -29,7 +27,8 @@ pipeline {
         
         stage('Publish to Artifactory') {
             steps {
-                sh 'jfrog rt npm-publish --repo-deploy ' + env.NPM_VIRTUAL_REPO
+                // Corrected command to use the JFrog CLI executable
+                sh "${tool 'jfrog-cli'}/jfrog rt npm-publish --repo-deploy " + env.NPM_VIRTUAL_REPO
             }
         }
     }
