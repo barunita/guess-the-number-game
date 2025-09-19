@@ -15,14 +15,16 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/barunita/guess-the-number-game.git'
             }
         }
+        
         stage('npm Install') {
             steps {
                 sh 'npm install'
             }
         }
+        
         stage('Publish to Artifactory') {
             steps {
-                sh 'jfrog rt npm-publish --repo-deploy ' + env.NPM_VIRTUAL_REPO
+                sh "${tool 'jfrog-cli'}/jf rt npm-publish --repo-deploy " + env.NPM_VIRTUAL_REPO
             }
         }
     }
