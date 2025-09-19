@@ -21,8 +21,14 @@ pipeline {
         
         stage('Configure JFrog CLI') {
             steps {
-                withCredentials([string(credentialsId: env.ARTIFACTORY_CREDENTIALS_ID, variable: 'ART_TOKEN')]) {
-                    sh "${tool 'jfrog-cli'}/jf c add arunitatrial123 --url=${env.ARTIFACTORY_URL} --access-token=${ART_TOKEN}"
+                script {
+                    try {
+                        withCredentials([string(credentialsId: env.ARTIFACTORY_CREDENTIALS_ID, variable: 'ART_TOKEN')]) {
+                            sh "${tool 'jfrog-cli'}/jf c add arunitatrial123 --url=${env.ARTIFACTORY_URL} --access-token=${ART_TOKEN}"
+                        }
+                    } catch (err) {
+                        echo "Warning: JFrog server 'arunitatrial123' already exists. Proceeding without re-adding."
+                    }
                 }
             }
         }
